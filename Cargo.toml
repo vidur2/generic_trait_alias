@@ -2,9 +2,14 @@
 name = "generic_trait_alias"
 version = "0.1.0"
 edition = "2021"
+description="A proc-macro attribute which can be used to create custom type aliases for abstraction"
+repository = "https://github.com/vidur2/generic_trait_alias"
+readme = "README.md"
+
 
 [lib]
 proc-macro=true
+path="src/lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
