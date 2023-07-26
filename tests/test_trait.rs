@@ -12,7 +12,7 @@ pub trait L {
 #[generic_trait_alias::trait_alias]
 pub type Z = Y + L + std::ops::Add<u8>;
 
-pub struct Test(u8);
+pub struct Test();
 
 impl Y for Test {
     fn foo(&self) -> String {
@@ -27,10 +27,10 @@ impl L for Test {
 }
 
 impl std::ops::Add<u8> for Test {
-    type Output = Test;
+    type Output = u8;
 
     fn add(self, rhs: u8) -> Self::Output {
-        return Test(self.0 + rhs)
+        return self.baz() + rhs
     }
 }
 
@@ -40,5 +40,5 @@ pub fn test_fn<T: Z>(x: T) -> String {
 
 #[test]
 fn test_macro() {
-    assert_eq!(test_fn(Test(0u8)), String::from("hello 7"))
+    assert_eq!(test_fn(Test()), String::from("hello 7"))
 }
