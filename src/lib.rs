@@ -9,7 +9,7 @@ mod lexer;
 mod generic;
 
 #[proc_macro_attribute]
-pub fn generic_trait(_attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn trait_alias(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let binding = item.to_string();
     let buff: Vec<&str> = binding.split(" ").into_iter().collect();
     let mut lexer = Lexer::new(buff);
@@ -25,11 +25,12 @@ pub fn generic_trait(_attr: TokenStream, item: TokenStream) -> TokenStream {
         impl<T> {} for T where T: {} {{}}
     ", ident, trait_list, ident, trait_list);
 
+
     if generic.is_pub() {
         expanded = format!("
             pub trait {}: {} {{}}
             impl<T> {} for T where T: {} {{}}
-        ", ident, "Clone + std::fmt::Display + Y + L", ident, "Clone + std::fmt::Display + Y + L");
+        ", ident, trait_list, ident, trait_list);
     }
 
     return expanded.parse().unwrap()

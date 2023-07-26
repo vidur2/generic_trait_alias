@@ -18,10 +18,8 @@ impl Parser {
         generic.set_is_pub(is_pub);
         let mut trait_ls = String::new();
         for trait_repr in generic.traits() {
-            trait_ls += &format!("{} + ", trait_repr);
+            trait_ls += &trait_repr;
         }
-
-        trait_ls = trait_ls[0..trait_ls.len() - 2].to_string();
 
         return (generic, trait_ls);
     }
@@ -69,6 +67,8 @@ impl Parser {
                     ident += &format!("::{}", ident2);
                 }
                 generic_trait.traits_mut().push(ident);
+            } else if let Token::Plus = &self.items[i] {
+                generic_trait.traits_mut().push("+".to_string());
             } else if let Token::SemiColon = &self.items[i] {
                 return generic_trait;
             } else if let Token::Assign = &self.items[i] {

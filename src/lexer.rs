@@ -27,9 +27,15 @@ impl<'a> Lexer<'a> {
     }
 
     pub fn get_token(&mut self) {
+        let last = self.buff.last().unwrap();
+        if last.clone() == ";" {
+            let len = self.buff.len();
+            self.buff[len - 1] = &self.buff[self.buff.len() - 1][..self.buff[self.buff.len() - 1].len() - 1];
+        }
         for i in self.buff.iter() {
             self.tokens.push(self.match_token(i.to_string()).unwrap());
         }
+        self.tokens.push(Token::SemiColon);
     }
 
     pub fn tokens(self) -> Vec<Token> {
