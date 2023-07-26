@@ -13,7 +13,9 @@ impl Parser {
     pub fn new(items: Vec<Token>) -> Self { Self { items } }
 
     pub fn get_string_repr(&mut self) -> (GenericTrait, String) {
-        let generic = self.parse();
+        let is_pub = self.get_is_pub();
+        let mut generic = self.parse();
+        generic.set_is_pub(is_pub);
         let mut trait_ls = String::new();
         for trait_repr in generic.traits() {
             trait_ls += &format!("{} + ", trait_repr);
@@ -22,6 +24,15 @@ impl Parser {
         trait_ls = trait_ls[0..trait_ls.len() - 2].to_string();
 
         return (generic, trait_ls);
+    }
+
+    fn get_is_pub(&mut self) -> bool {
+        if let Token::Pub = self.items[0] {
+            self.items = self.items[1..].to_vec();
+            return true;
+        }
+
+        return false;
     }
 
     fn parse(&mut self) -> GenericTrait {

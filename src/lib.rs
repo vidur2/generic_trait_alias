@@ -10,6 +10,7 @@ mod generic;
 
 #[proc_macro_attribute]
 pub fn generic_trait(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    // panic!("{}", item.to_string());
     let mut lexer = Lexer::new(item.to_string().parse().unwrap());
 
     lexer.get_token();
@@ -19,10 +20,17 @@ pub fn generic_trait(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let (generic, trait_list) = parser.get_string_repr();
     let ident = generic.ident();
 
-    let expanded = format!("
+    let mut expanded = format!("
         trait {}: {} {{}}
         impl<T> {} for T where T: {} {{}}
     ", ident, trait_list, ident, trait_list);
+
+    if generic.is_pub() {
+        expanded = format!("
+            pub trait {}: {} {{}}
+            impl<T> {} for T where T: {} {{}}
+        ", ident, "Clone + std::fmt::Display + Y + L", ident, "Clone + std::fmt::Display + Y + L");
+    }
 
     return expanded.parse().unwrap()
 }
@@ -34,7 +42,7 @@ mod test {
 
     #[test]
     pub fn test_lexer() {
-        let mut lexer = Lexer::new("type Z<T> = Add<T> + X + Y + L;".to_string().parse().unwrap());
+        let mut lexer = Lexer::new("type Z<T> = Add<T> + std::fmt::Display + Y + L;".to_string().parse().unwrap());
         lexer.get_token();
         println!("{:?}", lexer.tokens());
     }

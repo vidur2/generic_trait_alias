@@ -2,13 +2,15 @@ use std::str::Chars;
 
 use proc_macro::{TokenStream, Ident};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Token {
     Type,
     Ident(String),
     Assign,
     SemiColon,
-    Space,
+    OpenAngle,
+    CloseAngle,
+    Pub,
     Plus
 }
 
@@ -57,7 +59,7 @@ impl Lexer {
             self.jmp_idx += 1;
         }
 
-        while self.jmp_idx < self.buff.len() && self.buff[self.jmp_idx] != ' ' {
+        while self.jmp_idx < self.buff.len() && (self.buff[self.jmp_idx] != ' ' || self.buff[self.jmp_idx + 1] == ':') {
             if self.jmp_idx >= self.buff.len() {
                 return false;
             }
@@ -103,6 +105,7 @@ impl MatchToken<String> for Lexer {
             "=" => return Some(Token::Assign),
             "+" => return Some(Token::Plus),
             "type" => return Some(Token::Type),
+            "pub" => return Some(Token::Pub),
             _ => return Some(Token::Ident(s.replace(" ", "")))
         };
     }
