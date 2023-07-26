@@ -62,7 +62,6 @@ pub fn trait_alias(_attr: TokenStream, item: TokenStream) -> TokenStream {
         impl<T> {} for T where T: {} {{}}
     ", ident, trait_list, ident, trait_list);
 
-
     if generic.is_pub() {
         expanded = format!("
             pub trait {}: {} {{}}
@@ -76,7 +75,7 @@ pub fn trait_alias(_attr: TokenStream, item: TokenStream) -> TokenStream {
 #[cfg(test)]
 mod test {
 
-    use crate::{lexer::Lexer, parser::Parser};
+    use crate::{lexer::{Lexer, Token}, parser::Parser};
 
     #[test]
     pub fn test_lexer() {
@@ -84,7 +83,7 @@ mod test {
         let buff: Vec<&str> = binding.split(" ").into_iter().collect();
         let mut lexer = Lexer::new(buff);
         lexer.get_token();
-        println!("{:?}", lexer.tokens());
+        assert_eq!(15, lexer.tokens().len());
     }
 
     #[test]
@@ -96,7 +95,7 @@ mod test {
         lexer.get_token();
         let mut parser = Parser::new(lexer.tokens());
         let (_ident, traits) = parser.get_string_repr();
-        println!("{}", traits);
+        assert_eq!("Add+std::fmt::Display+Y+L;", traits);
     }
 
     #[test]

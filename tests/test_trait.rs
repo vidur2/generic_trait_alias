@@ -26,11 +26,11 @@ impl L for Test {
     }
 }
 
-pub fn test_fn<T: Z>(x: T) {
-    println!("{} {}", x.foo(), x.baz());
+pub fn test_fn<T: Z>(x: T) -> String {
+    return format!("{} {}", x.foo(), x.baz());
 }
 
 #[test]
 fn test_macro() {
-    test_fn(Test());
+    assert_eq!(test_fn(Test()), String::from("hello 7"))
 }

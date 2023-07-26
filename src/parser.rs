@@ -41,7 +41,7 @@ impl Parser {
         }
 
         match self.items[0] {
-            Token::Type => println!("First token valid"),
+            Token::Type => print!(""),
             _ => {
                 panic!("Expected keyword type at position 0");
             }
@@ -54,7 +54,7 @@ impl Parser {
         }
 
         match self.items[2] {
-            Token::Assign => println!("Third token valid"),
+            Token::Assign => print!(""),
             _ => panic!("Expected '=' at position 2")
         }
 
