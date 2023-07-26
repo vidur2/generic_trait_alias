@@ -10,8 +10,9 @@ mod generic;
 
 #[proc_macro_attribute]
 pub fn generic_trait(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    // panic!("{}", item.to_string());
-    let mut lexer = Lexer::new(item.to_string().parse().unwrap());
+    let binding = item.to_string();
+    let buff: Vec<&str> = binding.split(" ").into_iter().collect();
+    let mut lexer = Lexer::new(buff);
 
     lexer.get_token();
 
@@ -19,7 +20,6 @@ pub fn generic_trait(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
     let (generic, trait_list) = parser.get_string_repr();
     let ident = generic.ident();
-
     let mut expanded = format!("
         trait {}: {} {{}}
         impl<T> {} for T where T: {} {{}}
@@ -42,14 +42,18 @@ mod test {
 
     #[test]
     pub fn test_lexer() {
-        let mut lexer = Lexer::new("type Z<T> = Add<T> + std::fmt::Display + Y + L;".to_string().parse().unwrap());
+        let binding = String::from("type Z = Add + std :: fmt :: Display + Y + L;");
+        let buff: Vec<&str> = binding.split(" ").into_iter().collect();
+        let mut lexer = Lexer::new(buff);
         lexer.get_token();
         println!("{:?}", lexer.tokens());
     }
 
     #[test]
     pub fn test_parser() {
-        let mut lexer = Lexer::new("type Z<T> = Add<T> + X + Y + L;".to_string().parse().unwrap());
+        let binding = String::from("type Z = Add + std :: fmt :: Display + Y + L;");
+        let buff: Vec<&str> = binding.split(" ").into_iter().collect();
+        let mut lexer = Lexer::new(buff);
 
         lexer.get_token();
         let mut parser = Parser::new(lexer.tokens());

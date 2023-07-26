@@ -60,14 +60,22 @@ impl Parser {
             _ => panic!("Expected '=' at position 2")
         }
 
-        for i in 3..self.items.len() {
+        let mut i = 3;
+        while i < self.items.len() {
             if let Token::Ident(ident) = &self.items[i] {
-                generic_trait.traits_mut().push(ident.clone());
+                let mut ident = ident.clone();
+                while let Token::Colon = self.items[i + 1] && let Token::Ident(ident2) = &self.items[i + 2]{
+                    i += 2;
+                    ident += &format!("::{}", ident2);
+                }
+                generic_trait.traits_mut().push(ident);
             } else if let Token::SemiColon = &self.items[i] {
                 return generic_trait;
             } else if let Token::Assign = &self.items[i] {
                 panic!("Expected trait identifier at position {}", i);
             }
+
+            i += 1;
         }
 
         return generic_trait;

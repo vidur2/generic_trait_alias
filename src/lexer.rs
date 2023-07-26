@@ -8,78 +8,36 @@ pub enum Token {
     Ident(String),
     Assign,
     SemiColon,
-    OpenAngle,
-    CloseAngle,
+    Colon,
     Pub,
     Plus
 }
 
-pub struct Lexer {
+pub struct Lexer<'a> {
     tokens: Vec<Token>,
     idx: usize,
     jmp_idx: usize,
-    buff: Vec<char>
+    buff: Vec<&'a str>
 }
 
 trait MatchToken<T> {
     fn match_token(&self, s: T) -> Option<Token>;
 }
 
-impl Lexer {
-    pub fn new(buff: String) -> Self{
+impl<'a> Lexer<'a> {
+    pub fn new(buff: Vec<&'a str>) -> Self{
         return Self {
             tokens: Vec::new(),
             idx: 0,
             jmp_idx: 1,
-            buff: buff.chars().into_iter().collect(),
+            buff,
         }
     }
 
     pub fn get_token(&mut self) {
-        while self.get_next() {
-            self.idx = self.jmp_idx + 1;
-            self.jmp_idx = self.idx + 1;
+        for i in self.buff.iter() {
+            self.tokens.push(self.match_token(i.to_string()).unwrap());
         }
-        // let s: String = self.buff[self.idx..self.jmp_idx].into_iter().collect();
-        // self.tokens.push(self.match_token(s).unwrap());
-    }
-
-    fn peek(&self) -> (Option<Token>, bool) {
-        if self.jmp_idx == self.buff.len() {
-            return (None, false)
-        }
-        return (self.match_token(self.buff[self.jmp_idx]), true);
-    }
-
-    fn get_next(&mut self) -> bool {
-
-        if self.idx < self.buff.len() && let Some(tok) = self.match_token(self.buff[self.idx]) {
-            self.tokens.push(tok);
-            self.idx += 1;
-            self.jmp_idx += 1;
-        }
-
-        while self.jmp_idx < self.buff.len() && (self.buff[self.jmp_idx] != ' ' || self.buff[self.jmp_idx + 1] == ':') {
-            if self.jmp_idx >= self.buff.len() {
-                return false;
-            }
-
-            if let (Some(tok), out) = self.peek() {
-                let s: String = self.buff[self.idx..self.jmp_idx].into_iter().collect();
-                self.tokens.push(self.match_token(s).unwrap());
-                self.tokens.push(tok);
-                return out;
-            }
-            self.jmp_idx += 1;
-        }
-
-        if self.jmp_idx <= self.buff.len() {
-            let s: String = self.buff[self.idx..self.jmp_idx].into_iter().collect();
-            self.tokens.push(self.match_token(s).unwrap());
-            return self.jmp_idx < self.buff.len()
-        }
-        
-        return false;
     }
 
     pub fn tokens(self) -> Vec<Token> {
@@ -87,7 +45,7 @@ impl Lexer {
     }
 }
 
-impl MatchToken<char> for Lexer {
+impl<'a> MatchToken<char> for Lexer<'a> {
     fn match_token(&self, s: char) -> Option<Token> {
         match s {
             ';' => return Some(Token::SemiColon),
@@ -98,7 +56,7 @@ impl MatchToken<char> for Lexer {
     }
 }
 
-impl MatchToken<String> for Lexer {
+impl<'a> MatchToken<String> for Lexer<'a> {
     fn match_token(&self, s: String) -> Option<Token> {
         match s.as_str() {
             ";" => return Some(Token::SemiColon),
@@ -106,6 +64,7 @@ impl MatchToken<String> for Lexer {
             "+" => return Some(Token::Plus),
             "type" => return Some(Token::Type),
             "pub" => return Some(Token::Pub),
+            "::" => return Some(Token::Colon),
             _ => return Some(Token::Ident(s.replace(" ", "")))
         };
     }

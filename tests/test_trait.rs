@@ -1,5 +1,3 @@
-use std::{ops::Add, fmt::Display};
-
 pub trait X {
     fn hello(&self) -> String;
 }
