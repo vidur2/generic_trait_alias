@@ -1,6 +1,11 @@
 # generic_trait_alias
 Holds a proc_macro_attribute which can be used to create type aliases with a more inutive syntax (similar to the way struct aliases are handled) 
 
+## Install
+```bash
+cargo install generic_trait_alias
+```
+
 ## Examples
 ```rust
 use generic_trait_alias::trait_alias;
