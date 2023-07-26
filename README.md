@@ -15,4 +15,9 @@ use generic_trait_alias::trait_alias;
  // Creates a private trait alias
  #[trait_alias]
  type A = Z + Clone;
+
+// Only works with public alias x
+ pub fn example_pub<T: X>(x: T) {
+    println!("{}", x.z());
+ }
 ```
