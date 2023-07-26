@@ -5,7 +5,7 @@ edition = "2021"
 description="A proc-macro attribute which can be used to create custom type aliases for abstraction"
 repository = "https://github.com/vidur2/generic_trait_alias"
 readme = "README.md"
-
+license="MIT"
 
 [lib]
 proc-macro=true
