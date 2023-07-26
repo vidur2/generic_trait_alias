@@ -33,11 +33,13 @@ mod generic;
 /// ```
 /// use generic_trait_alias::trait_alias;
 ///
+/// 
+/// // Define an internal trait
 /// pub trait Z {
 ///     fn z(&self) -> u8;
 /// }
 /// 
-/// // Creates a pub trait alias
+/// // Creates a pub trait alias combining an internal trait with external one
 /// #[trait_alias]
 /// pub type X = Z + Clone;
 /// 
