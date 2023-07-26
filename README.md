@@ -5,6 +5,10 @@ Holds a proc_macro_attribute which can be used to create type aliases with a mor
 ```bash
 cargo install generic_trait_alias
 ```
+or 
+```bash
+cargo add generic_trait_alias
+```
 
 ## Examples
 ```rust
