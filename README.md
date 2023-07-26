@@ -13,15 +13,17 @@ cargo add generic_trait_alias
 ## Examples
 ```rust
 use generic_trait_alias::trait_alias;
+
+// Define internal trait
 pub trait Z {
     fn z(&self) -> u8;
 }
 
-// Creates a pub trait alias
+// Creates a pub trait alias with internal and external traits
 #[trait_alias]
 pub type X = Z + Clone;
 
-// Creates a private trait alias
+// Creates a private trait alias with internal and external traits
 #[trait_alias]
 type A = Z + Clone;
 
@@ -35,3 +37,6 @@ fn example<T: A>(x: A) {
     println!("{}", x.z());
 }
 ```
+
+## Limitations
+Currently does not support combined generic traits
