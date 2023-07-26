@@ -85,7 +85,7 @@ pub fn trait_alias(_attr: TokenStream, item: TokenStream) -> TokenStream {
 #[cfg(test)]
 mod test {
 
-    use crate::{lexer::{Lexer, Token}, parser::Parser};
+    use crate::{lexer::Lexer, parser::Parser};
 
     #[test]
     pub fn test_lexer() {
