@@ -8,6 +8,23 @@ mod parser;
 mod lexer;
 mod generic;
 
+/// Used to create a generic type alias containing multiple traits (similar to a nested struct type alias)
+/// 
+/// # Examples
+/// ```
+///
+/// pub trait Z {
+///     fn z(&self) -> u8;
+/// }
+/// 
+/// // Creates a pub trait alias
+/// #[trait_alias]
+/// pub type X = Clone + Hash + Z;
+/// 
+/// // Creates a private trait alias
+/// #[trait_alias]
+/// type A = Z + Clone;
+/// ```
 #[proc_macro_attribute]
 pub fn trait_alias(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let binding = item.to_string();
