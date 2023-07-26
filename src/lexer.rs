@@ -1,7 +1,3 @@
-
-
-use proc_macro::{TokenStream, Ident};
-
 #[derive(Debug, Clone)]
 pub enum Token {
     Type,
@@ -15,8 +11,6 @@ pub enum Token {
 
 pub struct Lexer<'a> {
     tokens: Vec<Token>,
-    idx: usize,
-    jmp_idx: usize,
     buff: Vec<&'a str>
 }
 
@@ -28,8 +22,6 @@ impl<'a> Lexer<'a> {
     pub fn new(buff: Vec<&'a str>) -> Self{
         return Self {
             tokens: Vec::new(),
-            idx: 0,
-            jmp_idx: 1,
             buff,
         }
     }

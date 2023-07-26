@@ -3,7 +3,7 @@ Target Syntax:
 type X = X1 + X2 + X3;
 */
 
-use crate::{lexer::Token, generic::{self, GenericTrait}};
+use crate::{lexer::Token, generic::GenericTrait};
 
 pub struct Parser {
     items: Vec<Token>,

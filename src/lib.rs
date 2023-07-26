@@ -57,7 +57,7 @@ mod test {
 
         lexer.get_token();
         let mut parser = Parser::new(lexer.tokens());
-        let (ident, traits) = parser.get_string_repr();
+        let (_ident, traits) = parser.get_string_repr();
         println!("{}", traits);
     }
 
