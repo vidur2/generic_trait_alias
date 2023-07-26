@@ -1,12 +1,12 @@
 pub trait X {
-    fn hello(&self) -> String;
+    fn bar(&self) -> String;
 }
 
 pub trait Y {
-    fn goodbye(&self) -> String;
+    fn foo(&self) -> String;
 }
 pub trait L {
-    fn world(&self) -> u8;
+    fn baz(&self) -> u8;
 }
 
 #[generic_trait_alias::trait_alias]
@@ -15,19 +15,19 @@ pub type Z = Y + L;
 pub struct Test();
 
 impl Y for Test {
-    fn goodbye(&self) -> String {
+    fn foo(&self) -> String {
         return String::from("hello");
     }
 }
 
 impl L for Test {
-    fn world(&self) -> u8 {
+    fn baz(&self) -> u8 {
         return 7;
     }
 }
 
 pub fn test_fn<T: Z>(x: T) {
-    println!("{} {}", x.goodbye(), x.world());
+    println!("{} {}", x.foo(), x.baz());
 }
 
 #[test]
