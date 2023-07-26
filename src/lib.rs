@@ -44,6 +44,14 @@ mod generic;
 /// // Creates a private trait alias
 /// #[trait_alias]
 /// type A = Z + Clone;
+/// 
+/// fn example_fn<T: A>(x: T) -> u8 {
+///     return x.z() + x.z();
+/// }
+/// 
+/// pub fn example_fn_pub<T: X>(x: T) -> u8 {
+///     return x.z() + x.z();
+/// }
 /// ```
 #[proc_macro_attribute]
 pub fn trait_alias(_attr: TokenStream, item: TokenStream) -> TokenStream {
